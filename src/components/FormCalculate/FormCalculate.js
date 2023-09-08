@@ -1,16 +1,30 @@
 import React, { useState } from "react";
 import "./FormCalculate.css";
 
-export const FormCalculate = () => {
+const initialUserInput = {
+  "current-savings": 1000,
+  "yearly-contribution": 1200,
+  "expected-return": 7,
+  duration: 10,
+};
+
+export const FormCalculate = (props) => {
+  const [userInput, setUserInput] = useState(initialUserInput);
+
   const submitHandler = (event) => {
     event.preventDefault();
-    console.log("SUBMIT");
+    props.onCalculate(userInput);
   };
   const resetHandler = () => {
-    console.log("RESET");
+    setUserInput(initialUserInput);
   };
   const inputChangeHandler = (input, value) => {
-    console.log(input, value);
+    setUserInput((prevInput) => {
+      return {
+        ...prevInput,
+        [input]: +value, // the "+" converts the string value to a number
+      };
+    });
   };
   return (
     <>
@@ -22,6 +36,7 @@ export const FormCalculate = () => {
               onChange={(event) =>
                 inputChangeHandler("current-savings", event.target.value)
               }
+              value={userInput["current-savings"]}
               type="number"
               id="current-savings"
             />
@@ -32,6 +47,7 @@ export const FormCalculate = () => {
               onChange={(event) =>
                 inputChangeHandler("yearly-contribution", event.target.value)
               }
+              value={userInput["yearly-contribution"]}
               type="number"
               id="yearly-contribution"
             />
@@ -46,6 +62,7 @@ export const FormCalculate = () => {
               onChange={(event) =>
                 inputChangeHandler("expected-return", event.target.value)
               }
+              value={userInput["expected-return"]}
               type="number"
               id="expected-return"
             />
@@ -56,6 +73,7 @@ export const FormCalculate = () => {
               onChange={(event) =>
                 inputChangeHandler("duration", event.target.value)
               }
+              value={userInput["duration"]}
               type="number"
               id="duration"
             />
